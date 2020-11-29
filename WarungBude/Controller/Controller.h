@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<time.h>
 #include"../Model/Model.h"
 
 const char* detectOS() {
@@ -22,10 +23,10 @@ const char* detectOS() {
 }
 
 void outputTime(){
-    char output[255] = "";
     time_t now;
-    struct tm *timeInfo;
+    time (&now);
     printf("%s\n", asctime(localtime(&now)));
+}
 
 DishNode *createDish(Dish d){
     DishNode *newDish = (DishNode*)malloc(sizeof(DishNode));
@@ -133,7 +134,9 @@ void addDish(){
         scanf("%[^\n]", newDish.dishName);
         getchar();
         valid = checkLowerCase(newDish.dishName);
-        valid = !checkDishUnique(newDish.dishName);
+        if(valid == true){
+            valid = !checkDishUnique(newDish.dishName);
+        }
     } while(valid == false);
 
     do{
@@ -178,7 +181,7 @@ void outputMenu(){
     dishCurr = dishHead;
     int counter = 1;
     while(dishCurr){
-        printf("%-3d %-15s %-4d Rp%-5d\n", counter, dishCurr->d.dishName, dishCurr->d.quantity, dishCurr->d.price);
+        printf("%-3d %-16s %-11d Rp%-5d\n", counter, dishCurr->d.dishName, dishCurr->d.quantity, dishCurr->d.price);
         dishCurr = dishCurr->next;
         counter++; 
     }
@@ -221,7 +224,6 @@ bool removeDish(char *dishName){
         printf("There's no dish\n");
         return false;
     } else if (strcmp(dishHead->d.dishName, dishName) == 0){
-        printf("sampe sini\n");
         popHead();
         return true;
     } else if (strcmp(dishTail->d.dishName, dishName) == 0){
@@ -343,7 +345,7 @@ Person *searchTable(char *nameInput){
 Person *findCustomer(char *nameInput){
     do{
         printf("Insert the customer\'s name to be searched: ");
-        scanf("%[^\n]", nameInput);
+            ("%[^\n]", nameInput);
         getchar();
     } while(!checkName(nameInput));
     return searchTable(nameInput);
@@ -371,6 +373,7 @@ void order(Person *currPerson){
     do{
         printf("Insert the amount of dish: ");
         scanf("%d", &input);
+        getchar();
         if(input > typeOfDish){
             printf("There are only %d dishes !\n", typeOfDish);
         }
@@ -428,7 +431,7 @@ bool validateHash(int input){
             printf("%s\n", hashHead[input]->name);
             dishCurr = hashHead[input]->head;
             int total = 0;
-            int counter = 0;
+            int counter = 1;
             while(dishCurr){
                 printf("[%d] %s x%d\n", counter, dishCurr->d.dishName, dishCurr->d.quantity);
                 counter++;
@@ -448,6 +451,7 @@ void pay(){
     do{
         printf("Insert the customer\'s index: ");
         scanf("%d", &input);
+        getchar();
     } while (!validateHash(input));
     printf("Press enter to continue...\n");
     getchar();  

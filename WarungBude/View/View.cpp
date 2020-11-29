@@ -97,8 +97,6 @@ int orderMenu(){
 
 int paymentMenu(){
     pay();
-    printf("Press enter to continue...\n");
-    getchar();  
     return 0;
 }
 
